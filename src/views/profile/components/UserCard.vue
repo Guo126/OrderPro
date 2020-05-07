@@ -1,13 +1,13 @@
 <template>
   <el-card style="margin-bottom:20px;">
     <div slot="header" class="clearfix">
-      <span>关于我</span>
+      <span>个人信息</span>
     </div>
 
     <div class="user-profile">
       <div class="box-center">
         <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
-          <div>Hello</div>
+          <div>您好，</div>
           {{ user.role }}
         </pan-thumb>
       </div>
@@ -25,30 +25,38 @@
             JS in Computer Science from the University of Technology
           </div>
         </div>
-      </div> -->
+      </div>-->
 
       <div class="user-skills user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>个人信息</span></div>
+        <div class="user-bio-section-header">
+          <svg-icon icon-class="skill" />
+          <span>个人信息</span>
+        </div>
         <div class="user-bio-section-body">
-          <div>{{user.userInfo.cityDesc}}|{{user.userInfo.areaDesc}}|{{user.userInfo.officeDesc}}</div>
-          <!-- <div class="progress-item">
-            <span>Vue</span>
-            <el-progress :percentage="70" />
+          <!-- <div>{{user.userInfo.cityDesc}}|{{user.userInfo.areaDesc}}|{{user.userInfo.officeDesc}}</div> -->
+          <div class="info">
+            <el-button type="primary" plain>{{ user.userInfo.cityDesc }}</el-button>
+            <el-button type="success" plain>{{ user.userInfo.areaDesc }}</el-button>
+            <el-button type="warning" plain>{{ user.userInfo.officeDesc }}</el-button>
           </div>
-          <div class="progress-item">
-            <span>JavaScript</span>
-            <el-progress :percentage="18" />
-          </div>
-          <div class="progress-item">
-            <span>Css</span>
-            <el-progress :percentage="12" />
-          </div>
-          <div class="progress-item">
-            <span>ESLint</span>
-            <el-progress :percentage="100" status="success" />
-          </div> -->
+          <br>
+          <el-button type="success" @click="dialog = true">修改密码</el-button>
         </div>
       </div>
+      <el-dialog title="修改密码" :visible.sync="dialog" width="30%">
+        <el-form ref="form" :model="form" label-width="80px">
+          <el-form-item label="旧密码">
+            <el-input v-model="form.oldPwd" placeholder="请输入旧密码" show-password />
+          </el-form-item>
+          <el-form-item label="新密码">
+            <el-input v-model="form.newPwd" placeholder="请输入新密码" show-password />
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialog = false">取 消</el-button>
+          <el-button type="success" @click="resetPwd()">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </el-card>
 </template>
@@ -68,10 +76,43 @@ export default {
           avatar: '',
           role: '',
           userInfo: {
-            name:'',
-            sex:''
+            name: '',
+            sex: ''
           }
         }
+      }
+    }
+  },
+  data() {
+    return {
+      dialog: false,
+      form: {
+        oldPwd: '',
+        newPwd: ''
+      }
+    }
+  },
+  methods: {
+    resetPwd() {
+      if (this.form.oldPwd !== '' && this.form.newPwd !== '') {
+        this.$store.dispatch('user/resetPwd', this.form).then(res => {
+          if (res.code === 20000) {
+            this.$notify({
+              title: '提示',
+              message: '修改成功！',
+              type: 'success'
+            })
+            this.dialog = false
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '请填写完整信息！',
+              type: 'warning'
+            })
+          }
+        })
+      } else {
+
       }
     }
   }
@@ -120,6 +161,9 @@ export default {
   margin-top: 20px;
   color: #606266;
 
+  .info {
+    display: flex;
+  }
   span {
     padding-left: 4px;
   }

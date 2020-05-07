@@ -47,15 +47,14 @@ service.interceptors.response.use(
 
     // if the custom code is not 20000, it is judged as an error.
     // if (!res.success) {
-      // let success = false;
-      // if( res.code && res.code !== 20000){
-      //   success = true;
-      // }else if(res.success && res.success !== true){
-      //   success = true;
-      // }
+    // let success = false;
+    // if( res.code && res.code !== 20000){
+    //   success = true;
+    // }else if(res.success && res.success !== true){
+    //   success = true;
+    // }
 
     if (res.code !== 20000) {
-
       Message({
         message: res.msg || '发生错误',
         type: 'error',

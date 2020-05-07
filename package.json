@@ -1,5 +1,5 @@
 {
-  "name": "国家电网预约系统",
+  "name": "orderpro",
   "version": "4.2.1",
   "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
@@ -22,7 +22,6 @@
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
-      "eslint --fix",
       "git add"
     ]
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-          <user-card :user="user" />
+    <user-card :user="user" />
 
     <!-- <div v-if="user">
       <el-row :gutter="20">
@@ -22,7 +22,7 @@
               </el-tab-pane>
             </el-tabs>
           </el-card>
-        </el-col> 
+        </el-col>
 
       </el-row>
     </div> -->
@@ -32,13 +32,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserCard from './components/UserCard'
-import Activity from './components/Activity'
-import Timeline from './components/Timeline'
-import Account from './components/Account'
+// import Activity from './components/Activity'
+// import Timeline from './components/Timeline'
+// import Account from './components/Account'
 
 export default {
   name: 'Profile',
-  components: { UserCard, Activity, Timeline, Account },
+  components: { UserCard },
   data() {
     return {
       user: {},

@@ -1,4 +1,4 @@
-import { login, logout, getInfo, search, create, remove } from '@/api/user'
+import { login, logout, getInfo, search, create, remove, resetPwd } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -60,17 +60,16 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
-
     return new Promise((resolve, reject) => {
       getInfo({ token: state.token }).then(response => {
-        let { data } = response
+        const { data } = response
         commit('SET_INFO', data)
 
         const defaultData = {
-          "roles": ["admin"],
-          "introduction": "I am a super administrator",
-          "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-          "name": "Super Admin"
+          'roles': ['admin'],
+          'introduction': 'I am a super administrator',
+          'avatar': 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+          'name': 'Super Admin'
         }
 
         if (!response) {
@@ -90,17 +89,16 @@ const actions = {
         commit('SET_INTRODUCTION', introduction)
 
         resolve(defaultData)
-
       }).catch(error => {
         reject(error)
       })
     })
   },
 
-  search({ commit }, filterList) { //查询用户
-    let { name, role, level, areaId } = filterList;
-    name = name == "" || !name ? undefined : name.trim();
-    role = role == "" ? undefined : role;
+  search({ commit }, filterList) { // 查询用户
+    let { name, role, level, areaId } = filterList
+    name = name == '' || !name ? undefined : name.trim()
+    role = role == '' ? undefined : role
 
     return new Promise((resolve, reject) => {
       search({ name: name, role: role, level: level, areaId: 1 }).then((data) => {
@@ -110,8 +108,8 @@ const actions = {
       })
     })
   },
-  create({ commit }, infoList) { //创建用户
-    const { name, username, pwd, sex, level, area, city, office } = infoList;
+  create({ commit }, infoList) { // 创建用户
+    const { name, username, pwd, sex, level, area, city, office } = infoList
     return new Promise((resolve, reject) => {
       create({ token: state.token, name: name.trim(), username: username.trim(), pwd: pwd, sex: sex, city: city, level: level, area: area, office: office }).then((data) => {
         resolve(data)
@@ -121,11 +119,21 @@ const actions = {
     })
   },
 
-  remove({ commit }, info) { //创建用户
-    const { targetToken } = info;
+  remove({ commit }, info) { // 创建用户
+    const { targetToken } = info
     return new Promise((resolve, reject) => {
       remove({ targetToken: targetToken, token: parseInt(state.token) }).then((data) => {
         resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  resetPwd({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      resetPwd({ token: state.token, oldPwd: data.oldPwd, newPwd: data.newPwd }).then(res => {
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
@@ -135,8 +143,8 @@ const actions = {
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       dispatch('tagsView/delAllViews', null, { root: true })
-         removeToken()
-         resetRouter()
+      removeToken()
+      resetRouter()
       resolve()
       // logout(state.token).then(() => {
       //   commit('SET_TOKEN', '')

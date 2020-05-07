@@ -83,7 +83,6 @@ export const constantRoutes = [
     ]
   },
 
-
   {
     path: '/profile',
     component: Layout,
@@ -109,20 +108,20 @@ export const asyncRoutes = [
     path: '/process',
     component: Layout,
     redirect: '/process/index',
+    name: 'Process',
+    alwaysShow: false,
     children: [
       {
         path: '/index',
-        // component: Layout,
         component: () => import('@/views/process/index'),
+        // component: () => import('@/views/process-manegement/info'),
 
-        // redirect: '/process/index',
-        // alwaysShow: true, // will always show the root menu
-        name: 'Process',
+        name: 'ProIndex',
         meta: {
           title: '业务员',
           icon: 'example',
           roles: ['admin'] // you can set roles in root nav
-        },
+        }
       }
     ]
   },
@@ -144,16 +143,16 @@ export const asyncRoutes = [
         name: 'IndexMan',
         meta: {
           title: '人员信息',
-          roles: ['admin']  // or you can only set roles in sub nav
+          roles: ['admin'] // or you can only set roles in sub nav
         }
-      },
+      }
     ]
   },
 
   {
     path: '/process-manegement',
     component: Layout,
-    redirect: '/process-manegement/index',
+    redirect: '/process-manegement/info',
     alwaysShow: true, // will always show the root menu
     name: 'processManegement',
     meta: {
@@ -165,10 +164,10 @@ export const asyncRoutes = [
       {
         path: 'info',
         component: () => import('@/views/process-manegement/info'),
-        name: 'IndexMan',
+        name: 'Info',
         meta: {
           title: '营业厅信息',
-          roles: ['admin']  // or you can only set roles in sub nav
+          roles: ['admin'] // or you can only set roles in sub nav
         }
       },
       {
@@ -177,7 +176,7 @@ export const asyncRoutes = [
         name: 'NumManegment',
         meta: {
           title: '营业厅规则',
-          roles: ['admin']  // or you can only set roles in sub nav
+          roles: ['admin'] // or you can only set roles in sub nav
         }
       }
     ]
@@ -311,9 +310,6 @@ export const asyncRoutes = [
   //     }
   //   ]
   // },
-
-
-
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

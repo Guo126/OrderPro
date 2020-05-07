@@ -35,7 +35,7 @@
       >新增</el-button>
     </div>
     <!-- 表格 -->
-    <diy-table :headList="headList" :dataList="dataList" @remove="removeUser" type="user"></diy-table>
+    <diy-table :head-list="headList" :data-list="dataList" type="user" @remove="removeUser" />
     <!-- 新增弹窗 -->
     <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
       <el-form
@@ -81,8 +81,8 @@
             v-model="temp.city"
             class="filter-item"
             placeholder="点击选择或搜索"
-            @change="getArea"
             filterable
+            @change="getArea"
           >
             <el-option
               v-for="item in cityList"
@@ -98,8 +98,8 @@
             v-model="temp.area"
             class="filter-item"
             placeholder="点击选择或搜索"
-            @change="getOffice"
             filterable
+            @change="getOffice"
           >
             <el-option
               v-for="item in areaList"
@@ -129,196 +129,195 @@
   </section>
 </template>
 <script>
-import diyTable from "../../components/Table/index";
-import { mapGetters } from "vuex";
+import diyTable from '../../components/Table/index'
+import { mapGetters } from 'vuex'
 export default {
-  created() {
-    this.listQuery = {
-      name: undefined,
-      role: undefined, //  1，2，3，4
-      level: this.userInfo.levelId,
-      areaId: this.userInfo.areaId
-    };
-    this.handleSearch();
-    this.getCity();
-  },
+  components: { diyTable },
   data() {
     return {
       calendarTypeOptions: [
-        { key: 1, display_name: "China" },
-        { key: 2, display_name: "USA" },
-        { key: 3, display_name: "Japan" },
-        { key: 4, display_name: "Eurozone" }
+        { key: 1, display_name: 'China' },
+        { key: 2, display_name: 'USA' },
+        { key: 3, display_name: 'Japan' },
+        { key: 4, display_name: 'Eurozone' }
       ],
       sexList: [
-        { key: "y", display_name: "男" },
-        { key: "m", display_name: "女" }
+        { key: 'y', display_name: '男' },
+        { key: 'm', display_name: '女' }
       ],
       dialogFormVisible: false,
       headList: [
         {
-          prop: "name",
-          label: "用户名"
+          prop: 'name',
+          label: '用户名'
         },
         {
-          prop: "sex",
-          label: "性别"
+          prop: 'sex',
+          label: '性别'
         },
         {
-          prop: "levelDesc",
-          label: "角色"
+          prop: 'levelDesc',
+          label: '角色'
         },
         {
-          prop: "workAge",
-          label: "平均时长"
+          prop: 'workAge',
+          label: '平均时长'
         },
         {
-          prop: "cityDesc",
-          label: "所属城市"
+          prop: 'cityDesc',
+          label: '所属城市'
         },
         {
-          prop: "areaDesc",
-          label: "所属区域"
+          prop: 'areaDesc',
+          label: '所属区域'
         },
         {
-          prop: "officeDesc",
-          label: "所属营业厅"
+          prop: 'officeDesc',
+          label: '所属营业厅'
         }
       ],
 
       roleList: [
         {
           code: 1,
-          role: "市级管理员"
+          role: '市级管理员'
         },
         {
           code: 2,
-          role: "区级管理员"
+          role: '区级管理员'
         },
         {
           code: 3,
-          role: "营业厅级管理员"
+          role: '营业厅级管理员'
         },
         {
           code: 4,
-          role: "业务员"
+          role: '业务员'
         }
       ],
       listQuery: {
-        name: "",
-        role: "" //0-》所有   1，2，3，4
+        name: '',
+        role: '' // 0-》所有   1，2，3，4
       },
       dataList: [],
       cityList: [],
       areaList: [],
       officeList: [],
       temp: {
-        name: "",
-        username: "",
-        pwd: "",
-        sex: "",
+        name: '',
+        username: '',
+        pwd: '',
+        sex: '',
         level: undefined,
         city: undefined,
         area: undefined,
         office: undefined
       }
-    };
+    }
   },
-  components: { diyTable },
-  computed: {
-    ...mapGetters(["userInfo", "roles"])
+   computed: {
+    ...mapGetters(['userInfo', 'roles'])
   },
+  created() {
+    this.listQuery = {
+      name: undefined,
+      role: undefined, //  1，2，3，4
+      level: this.userInfo.levelId,
+      areaId: this.userInfo.areaId
+    }
+    this.handleSearch()
+    this.getCity()
+  },
+ 
   methods: {
     getCity() {
-      this.$store.dispatch("office/getCity").then(res => {
-        this.cityList = res;
-      });
+      this.$store.dispatch('office/getCity').then(res => {
+        this.cityList = res
+      })
     },
     getArea() {
       this.$store
-        .dispatch("office/getArea", { cityId: this.temp.city })
+        .dispatch('office/getArea', { cityId: this.temp.city })
         .then(res => {
-          this.areaList = res;
-        });
+          this.areaList = res
+        })
     },
     getOffice() {
       this.$store
-        .dispatch("office/getOffice", { areaId: this.temp.area })
+        .dispatch('office/getOffice', { areaId: this.temp.area })
         .then(res => {
-          this.officeList = res;
-        });
+          this.officeList = res
+        })
     },
     handleSearch() {
-      this.loading = true;
+      this.loading = true
 
       this.$store
-        .dispatch("user/search", this.listQuery)
+        .dispatch('user/search', this.listQuery)
         .then(res => {
-          let temp = res.data;
+          const temp = res.data
           temp.forEach(item => {
-            item.sex = item.sex == "m" ? "女" : "男";
-          });
-          this.dataList = temp;
-          this.loading = false;
+            item.sex = item.sex === 'm' ? '女' : '男'
+          })
+          this.dataList = temp
+          this.loading = false
         })
         .catch(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     handleCreate() {
-      this.dialogFormVisible = true;
+      this.dialogFormVisible = true
     },
     createUser() {
-      let msg = "";
-      let showError = false;
-      if (Object.values(this.temp).some(item => !item || item == "")) {
-        showError = true;
-        msg = "请填写完整信息";
+      let msg = ''
+      let showError = false
+      if (Object.values(this.temp).some(item => !item || item === '')) {
+        showError = true
+        msg = '请填写完整信息'
       } else if (this.temp.pwd.length < 5) {
-        showError = true;
-        msg = "密码不得小于5位";
+        showError = true
+        msg = '密码不得小于5位'
       }
       if (showError) {
         this.$notify({
-          title: "提示",
+          title: '提示',
           message: msg,
-          type: "warning"
-        });
-        return;
+          type: 'warning'
+        })
+        return
       }
 
-      this.loading = true;
+      this.loading = true
 
       this.$store
-        .dispatch("user/create", this.temp)
+        .dispatch('user/create', this.temp)
         .then(res => {
           this.$notify({
-            title: "提示",
-            message: "新增成功！",
-            type: "success"
-          });
-          this.handleSearch();
-          this.loading = false;
-          this.dialogFormVisible = false;
+            title: '提示',
+            message: '新增成功！',
+            type: 'success'
+          })
+          this.handleSearch()
+          this.loading = false
+          this.dialogFormVisible = false
         })
         .catch(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     removeUser(id) {
-      this.$store.dispatch("user/remove", { targetToken: id }).then(res => {
+      this.$store.dispatch('user/remove', { targetToken: id }).then(res => {
         this.$notify({
-          title: "提示",
-          message: "删除成功！",
-          type: "success"
-        });
-        this.handleSearch();
-
-      });
-     
+          title: '提示',
+          message: '删除成功！',
+          type: 'success'
+        })
+        this.handleSearch()
+      })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 section {

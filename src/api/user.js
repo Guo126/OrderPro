@@ -44,7 +44,7 @@ export function search(data) {
   return request({
     url: '/staff/searchStaff',
     method: 'post',
-    params: { name: data.name , role: data.role ,levelId: data.level ,areaId: data.areaId }
+    params: { name: data.name, role: data.role, levelId: data.level, areaId: data.areaId }
   })
 }
 
@@ -56,9 +56,17 @@ export function create(data) {
   })
 }
 
-export function remove(data){
+export function remove(data) {
   return request({
-    url: './staff/delete',
+    url: '/staff/delete',
+    method: 'post',
+    params: data
+  })
+}
+
+export function resetPwd(data) {
+  return request({
+    url: '/staff/resetPwd',
     method: 'post',
     params: data
   })

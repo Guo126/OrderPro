@@ -15,30 +15,29 @@
 </template>
 
 <script>
-import { transactionList } from "@/api/remote-search";
+import { transactionList } from '@/api/remote-search'
 import Mock from 'mockjs'
-
 
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        success: "success",
-        pending: "danger"
-      };
-      return statusMap[status];
+        success: 'success',
+        pending: 'danger'
+      }
+      return statusMap[status]
     },
     orderNoFilter(str) {
-      return str.substring(0, 30);
+      return str.substring(0, 30)
     }
   },
   data() {
     return {
       list: null
-    };
+    }
   },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
     fetchData() {
@@ -47,5 +46,5 @@ export default {
     //     this.list = data.items.slice(0, 8);
     }
   }
-};
+}
 </script>
